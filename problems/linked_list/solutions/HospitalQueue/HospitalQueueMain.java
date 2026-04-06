@@ -1,5 +1,56 @@
 package linked_list.solutions.HospitalQueue;
 
+public class HospitalQueueMain {
+    public static void main (String[] args) {
+        HospitalQueue queue = new HospitalQueue();
+
+        // Add to Tail
+        queue.addToTail(101, "John", 45, "Chest Pain", 1, "08:00");
+        queue.addToTail(102, "Ann", 30, "Fever", 3, "08:15");
+        queue.addToTail(103, "Saw", 22, "Fracture", 2, "08:20");
+
+        System.out.println(queue.head.data.name);
+        System.out.println(queue.tail.data.name);
+
+        // Add to Head
+        queue.addToHead(104, "Peter", 60, "Stroke", 1, "08:25");
+        System.out.println(queue.head.data.name);
+
+        // Delete from Head
+        Patient seen = queue.deleteFromHead();
+        System.out.println(seen.name);
+        System.out.println(queue.head.data.name);
+
+        // Delete from tail
+        Patient left = queue.deleteFromTail();
+        System.out.println(left.name);
+        System.out.println(queue.tail.data.name);
+
+        // Add more
+        queue.addToTail(105, "Mary", 28, "Fever", 3, "08:40");
+        queue.addToTail(106, "David", 55, "Chest Pain", 1, "08:45");
+
+        // Search "ann"
+        Patient foundAnn = queue.searchByName("ann");
+        System.out.println(foundAnn != null ? foundAnn.id : "Not found");
+
+        // Search "Nobody"
+        Patient nobody = queue.searchByName("Nobody");
+        System.out.println(nobody != null ? nobody.id : "Not found");
+
+        // Counting Priority
+        System.out.println(queue.countByPriority(1));
+        System.out.println(queue.countByPriority(3));
+
+        // Remove by ID
+        Patient removed = queue.removeById(102);
+        System.out.println(removed != null ? removed.name : "Not found");
+
+        System.out.println("--- Final Queue ---");
+        queue.displayQueue();
+    }
+}
+
 class Patient {
     int id;
     String name;
