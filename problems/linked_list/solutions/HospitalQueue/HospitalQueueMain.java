@@ -13,7 +13,7 @@ class Patient {
         this.name = name;
         this.age = age;
         this.condition = condition;
-        this.priority = priority;
+        setPriority(priority);
         this.arrivalTime = arrivalTime;
     }
 
@@ -66,6 +66,14 @@ class Patient {
     public void setArrivalTime(String arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "[%d] %s, %d, %s, Priority: %d, Arrived: %s",
+                id, name, age, condition, priority, arrivalTime
+        );
+    }
 }
 
 class Node {
@@ -87,6 +95,18 @@ class HospitalQueue {
 
     public boolean isEmpty() {
         return head == null;
+    }
+
+    public int size() {
+        int count = 0;
+
+        Node temp = head;
+        while (temp != null) {
+            count++;
+            temp = temp.next;
+        }
+
+        return count;
     }
 
     public void addToTail(int id, String name, int age, String condition, int priority, String arrivalTime) {
@@ -162,6 +182,21 @@ class HospitalQueue {
         return null;
     }
 
+    public int getPosition(String name) {
+        int index = 0;
+        Node temp = head;
+
+        while (temp != null) {
+            if (temp.data.name.equalsIgnoreCase(name)) {
+                return index;
+            }
+            temp = temp.next;
+            index++;
+        }
+
+        return -1;
+    }
+
     public int countByPriority(int priority) {
         int count = 0;
         Node temp = head;
@@ -184,7 +219,7 @@ class HospitalQueue {
         while (temp != null) {
             if (temp.data.id == id) {
                 if (prev == null) {
-                    deleteFromHead();
+                    return deleteFromHead();
                 } else {
                     prev.next = temp.next;
 
@@ -198,5 +233,88 @@ class HospitalQueue {
             temp = temp.next;
         }
         return null;
+    }
+
+    private Node[] appendNode(Node bucketHead, Node bucketTail, Node node) {
+        if (bucketHead == null) {
+            bucketHead = bucketTail = node;
+        } else {
+            bucketTail.next = node;
+            bucketTail = node;
+        }
+        return new Node[]{bucketHead, bucketTail};
+    }
+
+    public void sortByPriority() {
+        if (head == null || head.next == null) return;
+
+        Node p1Head = null, p1Tail = null;
+        Node p2Head = null, p2Tail = null;
+        Node p3Head = null, p3Tail = null;
+
+        Node temp = head;
+        while (temp != null) {
+            Node next = temp.next;
+            temp.next = null;
+
+            int priority = temp.data.priority;
+            Node[] updated;
+
+            if (priority == 1) {
+                updated = appendNode(p1Head, p1Tail, temp);
+                p1Head = updated[0];
+                p1Tail = updated[1];
+            } else if (priority == 2) {
+                updated = appendNode(p2Head, p2Tail, temp);
+                p2Head = updated[0];
+                p2Tail = updated[1];
+            } else {
+                updated = appendNode(p3Head, p3Tail, temp);
+                p3Head = updated[0];
+                p3Tail = updated[1];
+            }
+            temp = next;
+        }
+
+        head = (p1Head != null) ? p1Head : (p2Head != null) ? p2Head : p3Head;
+
+        Node lastTail = null;
+        if (p1Head != null) {
+            lastTail = p1Tail;
+
+            if (p2Head != null) {
+                lastTail.next = p2Head;
+                lastTail = p2Tail;
+            }
+
+            if (p3Head != null) {
+                lastTail.next = p3Head;
+                lastTail = p3Tail;
+            }
+        } else if (p2Head != null) {
+            lastTail = p2Tail;
+            if (p3Head != null) {
+                lastTail.next = p3Head;
+                lastTail = p3Tail;
+            }
+        } else {
+            lastTail = p3Tail;
+        }
+
+        tail = lastTail;
+    }
+
+    public void displayQueue() {
+        if (isEmpty()) {
+            System.out.println("Queue is empty");
+            return;
+        }
+
+        Node temp = head;
+
+        while (temp != null) {
+            System.out.println(temp.data);
+            temp = temp.next;
+        }
     }
 }
