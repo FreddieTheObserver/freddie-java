@@ -122,7 +122,7 @@ If `chargedAlready` is `false`, call `member.charged(finalCharge)` and set `char
 
 ---
 
-## Part 6: Test in `GymManagementLab.java`
+## Part 6: Test in `GymManagementMain.java`
 
 Write a `main` method that produces the following sequence:
 
