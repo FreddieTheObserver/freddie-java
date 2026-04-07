@@ -10,11 +10,11 @@ class ListNode {
     }
 }
 
-public class SLL {
+public class SinglyLinkedListMain {
     ListNode head;
     ListNode tail;
 
-    public SLL() {
+    public SinglyLinkedListMain() {
         head = tail = null;
     }
 
