@@ -23,6 +23,12 @@ public class GymManagementMain {
         s1.chargeSession();
         System.out.println(m1.getUnPaid());
 
+        m1.refundSession(s1);
+        System.out.println(m1.getUnPaid());
+
+        m1.refundSession(s1);
+        System.out.println(m1.getUnPaid());
+
         // Session 2 — same member, charged again
         Session s2 = new Session(t1, m1, p1);
         System.out.println(s2.getFinalCharge());
@@ -44,6 +50,21 @@ public class GymManagementMain {
         System.out.println(s4.getFinalCharge());
         s4.chargeSession();
         System.out.println(m3.getUnPaid());
+
+        // Loyalty discount test — charge m2 (Premium) 5 times, 6th should be cheaper
+        Member m4 = new Member("Basic", 304, "Tom", 25, "Male");
+        double normalCharge = new Session(t1, m4, p1).getFinalCharge();
+        System.out.println("Normal charge: " + normalCharge);
+
+        for (int i = 1; i <= 5; i++) {
+            Session sx = new Session(t1, m4, p1);
+            sx.chargeSession();
+            System.out.println("After session " + i + ", unpaid: " + m4.getUnPaid() + ", charge was: " + sx.getFinalCharge());
+        }
+
+        // Session 6 — should be 10% cheaper
+        Session s6 = new Session(t1, m4, p1);
+        System.out.println("Session 6 charge (10% less = " + (normalCharge * 0.90) + "): " + s6.getFinalCharge());
     }
 }
 
@@ -137,11 +158,14 @@ class Trainer extends Person {
 class Member extends Person {
     private String membershipType;
     private double unpaid;
+    private int sessionCount;
+    private double discountMultiplier = 1.0;
 
     public Member(String membershipType, int id, String name, int age, String gender) {
         super(id, name, age, gender);
         this.membershipType = membershipType;
         this.unpaid = 0;
+        this.sessionCount = 0;
     }
 
     public String getMemberShipType() {
@@ -156,12 +180,33 @@ class Member extends Person {
         return unpaid;
     }
 
+    public int getSessionCount() { return sessionCount; }
+
+    public void setSessionCount(int sessionCount) {
+        this.sessionCount = sessionCount;
+    }
+
     public void charged(double amount) {
         unpaid += amount;
     }
 
     public void pay(double payment) {
         unpaid -= payment;
+        if (unpaid < 0) unpaid = 0;
+    }
+
+    public void applyLoyaltyDiscount(int sessionsCompleted) {
+        if (sessionsCompleted % 5 == 0) {
+            discountMultiplier *= 0.90;
+        }
+    }
+
+    public double getDiscountMultiplier() {
+        return discountMultiplier;
+    }
+
+    public void refundSession(Session s) {
+        unpaid -= s.getFinalCharge();
         if (unpaid < 0) unpaid = 0;
     }
 
@@ -227,12 +272,15 @@ class Session {
             total *= 0.80;
         }
 
+        total *= member.getDiscountMultiplier();
         return total;
     }
 
     public void chargeSession() {
         if (!chargedAlready) {
             member.charged(finalCharge);
+            member.setSessionCount(member.getSessionCount() + 1);
+            member.applyLoyaltyDiscount(member.getSessionCount());
             chargedAlready = true;
         }
     }
