@@ -1,5 +1,7 @@
 # Reverse a Linked List — Singly Linked List
 
+> **Solution:** [../solutions/ReverseLinkedList/](../solutions/ReverseLinkedList/)
+
 ## Problem Description
 
 Given a singly linked list, reverse it **in-place** — without allocating a new list.
