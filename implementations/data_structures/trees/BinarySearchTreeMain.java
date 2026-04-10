@@ -1,7 +1,52 @@
 package data_structures.trees;
 
-public class BinarySearchTreeMain {
+import java.util.Arrays;
 
+public class BinarySearchTreeMain {
+    public static void main(String[] args) {
+        BinarySearchTree bst = new BinarySearchTree();
+        int[] values = {8, 3, 10, 1, 6, 14, 4, 7, 13, 6};
+        int[] removals = {1, 14, 3};
+
+        for (int value : values) {
+            bst.root = bst.insert(bst.root, value);
+        }
+
+        System.out.println("Inserted values: " + Arrays.toString(values));
+        System.out.println("In-order traversal: " + Arrays.toString(inOrderValues(bst.root)));
+        System.out.println("Search 7: " + bst.search(bst.root, 7));
+        System.out.println("Search 2: " + bst.search(bst.root, 2));
+
+        for (int value : removals) {
+            bst.root = bst.remove(bst.root, value);
+            System.out.println("After removing " + value + ": "
+                    + Arrays.toString(inOrderValues(bst.root)));
+        }
+    }
+
+    private static int[] inOrderValues(TreeNode node) {
+        int[] values = new int[countNodes(node)];
+        collectInOrder(node, values, new int[]{0});
+        return values;
+    }
+
+    private static int countNodes(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        return 1 + countNodes(node.left) + countNodes(node.right);
+    }
+
+    private static void collectInOrder(TreeNode node, int[] values, int[] index) {
+        if (node == null) {
+            return;
+        }
+
+        collectInOrder(node.left, values, index);
+        values[index[0]++] = node.value;
+        collectInOrder(node.right, values, index);
+    }
 }
 
 class TreeNode {
