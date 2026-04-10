@@ -1,4 +1,4 @@
-package algorithms.binary_search;
+package data_structures.trees;
 
 public class BinarySearchTreeMain {
 
