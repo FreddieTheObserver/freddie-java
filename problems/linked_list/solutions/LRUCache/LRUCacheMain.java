@@ -61,6 +61,7 @@ class LRUCache {
 
         this.capacity = capacity;
         this.cache = new HashMap<>();
+        // Sentinel nodes simplify insert/remove by avoiding null checks at boundaries.
         this.head = new CacheNode(0, 0);
         this.tail = new CacheNode(0, 0);
 
@@ -71,7 +72,8 @@ class LRUCache {
     public int get(int key) {
         if (cache.containsKey(key)) {
             CacheNode node = cache.get(key);
-             moveToFront(node);
+            // Access makes this key most recently used.
+            moveToFront(node);
             return node.value;
         }
         return -1;
@@ -81,15 +83,18 @@ class LRUCache {
         if (cache.containsKey(key)) {
             CacheNode node = cache.get(key);
             node.value = value;
+            // Updating an existing key also refreshes its recency.
             moveToFront(node);
         } else {
             CacheNode newNode = new CacheNode(key, value);
             cache.put(key, newNode);
+            // New keys are inserted as most recently used.
             addToFront(newNode);
 
             if (cache.size() > capacity) {
+                // Remove least recently used node (right before tail sentinel).
                 CacheNode lru = evictLast();
-                 cache.remove(lru.key);
+                cache.remove(lru.key);
             }
         }
     }
@@ -97,6 +102,7 @@ class LRUCache {
     public void addToFront(CacheNode node) {
         CacheNode first = head.next;
 
+        // Insert node between head and current first real node.
         node.prev = head;
         node.next = first;
 
@@ -108,11 +114,13 @@ class LRUCache {
         CacheNode prevNode = node.prev;
         CacheNode nextNode = node.next;
 
+        // Bypass node to unlink it from the doubly linked list.
         prevNode.next = nextNode;
         nextNode.prev = prevNode;
     }
 
     public void moveToFront(CacheNode node) {
+        // Keep map entry, only reposition node in recency order.
         removeNode(node);
         addToFront(node);
     }
