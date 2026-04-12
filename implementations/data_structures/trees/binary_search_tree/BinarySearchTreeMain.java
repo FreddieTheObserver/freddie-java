@@ -1,4 +1,4 @@
-package data_structures.trees;
+package data_structures.trees.binary_search_tree;
 
 import java.util.Arrays;
 

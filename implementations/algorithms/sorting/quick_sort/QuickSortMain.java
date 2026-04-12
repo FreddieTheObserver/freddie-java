@@ -1,4 +1,4 @@
-package algorithms.sorting;
+package algorithms.sorting.quick_sort;
 
 public class QuickSortMain {
     public static int[] quickSort(int[] arr, int s, int e) {

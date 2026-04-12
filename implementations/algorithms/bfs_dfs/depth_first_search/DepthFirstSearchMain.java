@@ -1,4 +1,4 @@
-package algorithms.bfs_dfs;
+package algorithms.bfs_dfs.depth_first_search;
 
 public class DepthFirstSearchMain {
     public static void main(String[] args) {

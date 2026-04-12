@@ -5,8 +5,21 @@
 ## Structure
 
 ```
-implementations/   # Data structure & algorithm implementations
-problems/          # Problem sheets and solutions
+implementations/
+  data_structures/
+    linked_lists/
+      singly_linked_list/       # README.md + SinglyLinkedListMain.java
+    trees/
+      binary_search_tree/       # README.md + BinarySearchTreeMain.java
+  algorithms/
+    sorting/
+      merge_sort/               # README.md + MergeSortMain.java
+      quick_sort/               # README.md + QuickSortMain.java
+      insertion_sort/           # README.md + InsertionSortMain.java
+    bfs_dfs/
+      depth_first_search/       # README.md + DepthFirstSearchMain.java
+
+problems/                       # Problem sheets and solutions
 ```
 
 ## Java Style Note
