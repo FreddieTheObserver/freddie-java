@@ -173,6 +173,7 @@ class MusicPlaylist {
         Song newSong = new Song(id, title, artist, genre, duration, rating);
 
         if (isEmpty()) {
+            // if empty, just create a new node and set head and tail the same
             head = tail = new Node(newSong, null, null);
         } else {
             tail.next = new Node(newSong, tail, null);
@@ -184,6 +185,7 @@ class MusicPlaylist {
         Song newSong = new Song(id, title, artist, genre, duration, rating);
 
         head = new Node(newSong, null, head);
+        // if head.next != null means linked list is not empty (it have more than single node)
         if (head.next != null) {
             head.next.prev = head;
         } else {
@@ -197,6 +199,11 @@ class MusicPlaylist {
         } else {
             Song newSong = new Song(id, title, artist, genre, duration, rating);
             Node newNode = new Node(newSong, current, current.next);
+
+            //    current(prev) -> newNode -> current.next(next)
+            //    if there is a node after newNode, then assign it's prev pointer to newNode.
+            //    else set the tail pointer to newNode because it's the last node if there is no other node in front.
+
             if (current.next != null) {
                 current.next.prev = newNode;
             } else {
@@ -210,11 +217,13 @@ class MusicPlaylist {
         Song song = null;
 
         if (isEmpty()) {
-            return song;
+            return null;
         } else if (head == tail) {
+            // single node case, set head and tail to null
             song = head.song;
             head = tail = null;
         } else {
+            // if not single node, set head to head.next and set head.prev to null to disconnect the pointer to the old head
             song = head.song;
             head = head.next;
             head.prev = null;
@@ -227,7 +236,7 @@ class MusicPlaylist {
         Song song = null;
 
         if (isEmpty()) {
-            return song;
+            return null;
         } else if (head == tail) {
             song = head.song;
             head = tail = null;
