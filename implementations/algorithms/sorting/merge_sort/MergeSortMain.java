@@ -1,30 +1,58 @@
 package algorithms.sorting.merge_sort;
 
 public class MergeSortMain {
-    public static void mergeSort(int[] arr, int left, int right) {
-        if (left >= right) return;
+    public static int[] mergeSort(int[] arr) {
+        if (arr == null || arr.length <= 1) return arr;
+
+        mergeSort(arr, 0, arr.length - 1);
+        return arr;
+    }
+
+    private static void mergeSort(int[] arr, int left, int right) {
+        if (left >= right) {
+            return;
+        }
 
         int mid = left + (right - left) / 2;
+
         mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
+        mergeSort(arr,mid + 1, right);
+
         merge(arr, left, mid, right);
     }
 
     private static void merge(int[] arr, int left, int mid, int right) {
-        int[] tmp = new int[right - left + 1];
-        int i = left, j = mid + 1, k = 0;
+        int[] temp = new int [right - left + 1];
 
-        while (i <= mid && j <= right) {
-            if (arr[i] <= arr[j]) {
-                tmp[k++] = arr[i++];
+        int l = left;
+        int r = mid + 1;
+        int i = 0;
+
+        while (l <= mid && r <= right) {
+            if (arr[l] <= arr[r]) {
+                temp[i] = arr[l];
+                l++;
             } else {
-                tmp[k++] = arr[j++];
+                temp[i] = arr[r];
+                r++;
             }
+            i++;
         }
 
-        while (i <= mid) tmp[k++] = arr[i++];
-        while (j <= right) tmp[k++] = arr[j++];
+        while (l <= mid) {
+            temp[i] = arr[l];
+            l++;
+            i++;
+        }
 
-        System.arraycopy(tmp, 0, arr, left, tmp.length);
+        while (r <= right) {
+            temp[i] = arr[r];
+            r++;
+            i++;
+        }
+
+        for (int x = 0; x < temp.length; x++) {
+            arr[left + x] = temp[x];
+        }
     }
 }
