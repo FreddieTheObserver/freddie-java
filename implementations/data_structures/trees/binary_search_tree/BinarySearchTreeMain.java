@@ -71,7 +71,7 @@ class BinarySearchTree {
         this.root = root;
     }
 
-    public boolean search(TreeNode node, int value) {
+    public boolean searchRecur(TreeNode node, int value) {
         if (node == null) {
             return false;
         }
@@ -80,10 +80,25 @@ class BinarySearchTree {
         }
 
         if (value < node.value) {
-            return search(node.left, value);
+            return searchRecur(node.left, value);
         } else {
-            return search(node.right, value);
+            return searchRecur(node.right, value);
         }
+    }
+
+    public boolean searchIte(TreeNode node, int value) {
+        while (node != null) {
+            if (node.value == value) {
+                return true;
+            }
+
+            if (value < node.value) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        return false;
     }
 
     public TreeNode insert(TreeNode root, int val) {
