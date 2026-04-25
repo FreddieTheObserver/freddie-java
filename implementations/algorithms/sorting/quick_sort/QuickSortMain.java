@@ -2,22 +2,19 @@ package algorithms.sorting.quick_sort;
 
 public class QuickSortMain {
     public static int[] quickSort(int[] arr, int s, int e) {
-        if (e - s + 1 <= 1) {
-            return arr;
-        }
+        if (e - s + 1 <= 1) return arr;
 
         int pivot = arr[e];
-        int left = s; // Pointer for left side
+        int left = s;
 
         for (int i = s; i < e; i++) {
             if (arr[i] < pivot) {
-                int tmp = arr[left];
+                int temp = arr[left];
                 arr[left] = arr[i];
-                arr[i] = tmp;
+                arr[i] = temp;
                 left++;
             }
         }
-
         arr[e] = arr[left];
         arr[left] = pivot;
 
