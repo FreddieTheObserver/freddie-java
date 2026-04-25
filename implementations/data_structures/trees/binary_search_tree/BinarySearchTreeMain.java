@@ -9,13 +9,13 @@ public class BinarySearchTreeMain {
         int[] removals = {1, 14, 3};
 
         for (int value : values) {
-            bst.root = bst.insert(bst.root, value);
+            bst.root = bst.insertRecur(bst.root, value);
         }
 
         System.out.println("Inserted values: " + Arrays.toString(values));
         System.out.println("In-order traversal: " + Arrays.toString(inOrderValues(bst.root)));
-        System.out.println("Search 7: " + bst.search(bst.root, 7));
-        System.out.println("Search 2: " + bst.search(bst.root, 2));
+        System.out.println("Search 7: " + bst.searchRecur(bst.root, 7));
+        System.out.println("Search 2: " + bst.searchIte(bst.root, 2));
 
         for (int value : removals) {
             bst.root = bst.remove(bst.root, value);
@@ -101,17 +101,43 @@ class BinarySearchTree {
         return false;
     }
 
-    public TreeNode insert(TreeNode root, int val) {
+    public TreeNode insertRecur(TreeNode root, int val) {
         if (root == null) {
             return new TreeNode(val);
         }
 
         if (val > root.value) {
-            root.right = insert(root.right, val);
+            root.right = insertRecur(root.right, val);
         } else if (val < root.value) {
-            root.left = insert(root.left, val);
-        } else {
-            root.right = insert(root.right, val);
+            root.left = insertRecur(root.left, val);
+        }
+        return root;
+    }
+
+    public TreeNode insertIte(TreeNode root, int val) {
+        TreeNode newNode = new TreeNode(val);
+
+        if (root == null) {
+            return newNode;
+        }
+
+        TreeNode current = root;
+        while (true) {
+            if (val < current.value) {
+                if (current.left == null) {
+                    current.left = newNode;
+                    break;
+                }
+                current = current.left;
+            } else if (val > current.value) {
+                if (current.right == null) {
+                    current.right = newNode;
+                    break;
+                }
+                current = current.right;
+            } else {
+                break;
+            }
         }
         return root;
     }
