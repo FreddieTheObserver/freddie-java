@@ -105,6 +105,8 @@ public class Sorting {
     public static int[] mergeSort(int[] arr) {
         if (arr == null || arr.length == 1) return arr;
 
+
+
         mergeSort(arr, 0, arr.length - 1);
         return arr;
     }
