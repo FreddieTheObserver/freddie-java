@@ -19,6 +19,16 @@ public class HeapMain {
         System.out.println("delete index 1: " + minHeap.delete(1));
         minHeap.print();
 
+        System.out.println("=== MinHeap enqueue/dequeue ===");
+        MinHeap queueMin = new MinHeap();
+        for (int v : minValues) {
+            queueMin.enqueue(v);
+        }
+        queueMin.print();
+        System.out.println("dequeue: " + queueMin.dequeue());
+        System.out.println("dequeue: " + queueMin.dequeue());
+        queueMin.print();
+
         System.out.println("=== MaxHeap ===");
         MaxHeap maxHeap = new MaxHeap();
         for (int v : minValues) {
@@ -28,6 +38,16 @@ public class HeapMain {
 
         System.out.println("extractMax: " + maxHeap.extractMax()); // 25
         maxHeap.print();
+
+        System.out.println("=== MaxHeap enqueue/dequeue ===");
+        MaxHeap queueMax = new MaxHeap();
+        for (int v : minValues) {
+            queueMax.enqueue(v);
+        }
+        queueMax.print();
+        System.out.println("dequeue: " + queueMax.dequeue());
+        System.out.println("dequeue: " + queueMax.dequeue());
+        queueMax.print();
 
         System.out.println("=== buildHeap (heapify) ===");
         int[] raw = {4, 10, 3, 5, 1};
@@ -94,6 +114,14 @@ class MinHeap {
         arr[size] = val;
         size++;
         heapifyUp(size - 1);
+    }
+
+    public void enqueue(int val) {
+        insert(val);
+    }
+
+    public int dequeue() {
+        return extractMin();
     }
 
     public int extractMin() {
@@ -210,6 +238,14 @@ class MaxHeap {
         arr[size] = val;
         size++;
         heapifyUp(size - 1);
+    }
+
+    public void enqueue(int val) {
+        insert(val);
+    }
+
+    public int dequeue() {
+        return extractMax();
     }
 
     public int extractMax() {
