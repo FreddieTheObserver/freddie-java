@@ -9,6 +9,8 @@ implementations/
   data_structures/
     linked_lists/
       singly_linked_list/       # README.md + SinglyLinkedListMain.java
+    heaps/
+      Heap/                     # README.md + HeapMain.java (MinHeap, MaxHeap, PriorityQueue)
     trees/
       binary_search_tree/       # README.md + BinarySearchTreeMain.java
   algorithms/

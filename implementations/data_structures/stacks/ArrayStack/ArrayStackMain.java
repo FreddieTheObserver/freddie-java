@@ -7,6 +7,7 @@ public class ArrayStackMain {
         stack.push(1);
         stack.push(2);
         stack.push(3);
+
         stack.print();                          // [3, 2, 1] ← top is leftmost
 
         System.out.println("peek: " + stack.peek());  // 3
