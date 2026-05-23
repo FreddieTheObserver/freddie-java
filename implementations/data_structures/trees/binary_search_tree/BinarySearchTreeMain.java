@@ -22,6 +22,21 @@ public class BinarySearchTreeMain {
             System.out.println("After removing " + value + ": "
                     + Arrays.toString(inOrderValues(bst.root)));
         }
+
+        System.out.println("\n=== deleteByMerging ===");
+        BinarySearchTree mergeBst = new BinarySearchTree();
+        for (int value : values) {
+            mergeBst.root = mergeBst.insertRecur(mergeBst.root, value);
+        }
+        int[] mergeRemovals = {1, 14, 6, 8};
+
+        System.out.println("In-order before merges: "
+                + Arrays.toString(inOrderValues(mergeBst.root)));
+        for (int value : mergeRemovals) {
+            mergeBst.root = mergeBst.deleteByMerging(mergeBst.root, value);
+            System.out.println("After deleteByMerging " + value + ": "
+                    + Arrays.toString(inOrderValues(mergeBst.root)));
+        }
     }
 
     private static int[] inOrderValues(TreeNode node) {
@@ -167,6 +182,33 @@ class BinarySearchTree {
                 root.value = minNode.value;
                 root.right = remove(root.right, minNode.value);
             }
+        }
+        return root;
+    }
+
+    public TreeNode deleteByMerging(TreeNode root, int value) {
+        if (root == null) {
+            return null;
+        }
+
+        if (value < root.value) {
+            root.left = deleteByMerging(root.left, value);
+        } else if (value > root.value) {
+            root.right = deleteByMerging(root.right, value);
+        } else {
+            if (root.left == null) {
+                return root.right;
+            }
+            if (root.right == null) {
+                return root.left;
+            }
+
+            TreeNode rightmost = root.left;
+            while (rightmost.right != null) {
+                rightmost = rightmost.right;
+            }
+            rightmost.right = root.right;
+            return root.left;
         }
         return root;
     }
