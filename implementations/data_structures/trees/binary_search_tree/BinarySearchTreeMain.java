@@ -157,17 +157,9 @@ class BinarySearchTree {
         return root;
     }
 
-    public TreeNode minValueNode(TreeNode root) {
-        TreeNode curr = root;
-        while (curr != null && curr.left != null) {
-            curr = curr.left;
-        }
-        return curr;
-    }
-
     public TreeNode remove(TreeNode root, int value) {
         if (root == null) return null;
-
+    
         if (value > root.value) {
             root.right = remove(root.right, value);
         } else if (value < root.value) {
@@ -178,9 +170,13 @@ class BinarySearchTree {
             } else if (root.right == null) {
                 return root.left;
             } else {
-                TreeNode minNode = minValueNode(root.right);
-                root.value = minNode.value;
-                root.right = remove(root.right, minNode.value);
+                // find the smallest node in the right subtree (inorder successor)
+                TreeNode curr = root.right;
+                while (curr.left != null) {
+                    curr = curr.left;
+                }
+                root.value = curr.value;
+                root.right = remove(root.right, curr.value);
             }
         }
         return root;
